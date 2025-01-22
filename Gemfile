@@ -51,3 +51,10 @@ end
 gem "devise", "~> 4.9"
 
 gem "factory_bot", "~> 6.5"
+gem 'u-case', '~> 4.5.1'
+gem 'pry', '~> 0.15.0'
+gem 'blueprinter'
+gem 'has_scope'
+gem 'geocoder'
+gem "viacep"
+gem 'will_paginate', '~> 4.0'

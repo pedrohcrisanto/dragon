@@ -91,7 +91,7 @@ builder:
 # ssh:
 #   user: app
 
-# Use accessory services (secrets come from .kamal/secrets).
+# Use accessory cases (secrets come from .kamal/secrets).
 # accessories:
 #   db:
 #     image: mysql:8.0
