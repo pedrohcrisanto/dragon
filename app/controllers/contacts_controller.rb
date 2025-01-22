@@ -1,30 +1,34 @@
 class ContactsController < ApplicationController
   before_action :set_contact, only: %i[ show update destroy ]
-  before_action :authenticate_user!
-  # GET /contacts
+  # before_action :authenticate_user!
+  # GET /contact
   def index
-    @contacts = Contact.includes(:user).where(user: current_user)
+    result = ::Contact::List.call(user: User.last, collection: collection, search: params[:q])
 
-    render json: @contacts
+    if result.success?
+      render json: result.data
+    else
+      render json: result.data, status: :unprocessable_entity
   end
 
-  # GET /contacts/1
+  # GET /contact/1
   def show
     render json: @contact
   end
 
-  # POST /contacts
+  # POST /contact
   def create
-    @contact = Contact.new(contact_params)
-
-    if @contact.save
-      render json: @contact, status: :created, location: @contact
+    result = ::Contact::Create.call(contact: contact_params[:contact],
+                                        address: contact_params[:address],
+                                        user: User.last)
+    if result.success?
+      render json: result.data, status: :created
     else
-      render json: @contact.errors, status: :unprocessable_entity
+      render json: result.data, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /contacts/1
+  # PATCH/PUT /contact/1
   def update
     if @contact.update(contact_params)
       render json: @contact
@@ -33,7 +37,7 @@ class ContactsController < ApplicationController
     end
   end
 
-  # DELETE /contacts/1
+  # DELETE /contact/1
   def destroy
     @contact.destroy!
   end
@@ -44,9 +48,14 @@ class ContactsController < ApplicationController
       @contact = Contact.find(params.expect(:id))
     end
 
+    def collection
+      User.last.contacts.includes(:address).order(:name)
+    end
+
     # Only allow a list of trusted parameters through.
     def contact_params
-      params.expect(contact: [ :name, :cpf, :cellphone, :user_id ],
+      params.permit(:q,
+                    contact: [ :name, :cpf, :cellphone, :user_id ],
                     address: [ :street, :city, :state, :zip_code, :number, :complement ])
     end
 end
