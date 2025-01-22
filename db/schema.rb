@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_21_172728) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_22_175015) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -18,13 +18,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_21_172728) do
     t.integer "zip_code"
     t.string "street"
     t.integer "number"
-    t.string "city"
-    t.string "state"
     t.string "complement"
-    t.bigint "user_id", null: false
+    t.bigint "contact_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_addresses_on_user_id"
+    t.string "city"
+    t.string "state"
+    t.float "latitude"
+    t.float "longitude"
+    t.index ["contact_id"], name: "index_addresses_on_contact_id"
+    t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -49,6 +52,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_21_172728) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "addresses", "users"
+  add_foreign_key "addresses", "contacts"
   add_foreign_key "contacts", "users"
 end

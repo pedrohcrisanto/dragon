@@ -1,6 +1,6 @@
 class Contact < ApplicationRecord
   belongs_to :user
-  has_many :address, dependent: :destroy
+  has_one :address, dependent: :destroy
 
   validates :cpf, uniqueness: true
 end
