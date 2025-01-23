@@ -57,7 +57,7 @@ RSpec.describe "/contacts", type: :request do
         }.to change(Contact, :count).by(1)
       end
 
-      it "renders a JSON response with the new contact" do
+      it "renders a JSON response with the new contact_list" do
         post contacts_url,
              params: { contact: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
@@ -73,7 +73,7 @@ RSpec.describe "/contacts", type: :request do
         }.to change(Contact, :count).by(0)
       end
 
-      it "renders a JSON response with errors for the new contact" do
+      it "renders a JSON response with errors for the new contact_list" do
         post contacts_url,
              params: { contact: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
@@ -88,7 +88,7 @@ RSpec.describe "/contacts", type: :request do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested contact" do
+      it "updates the requested contact_list" do
         contact = Contact.create! valid_attributes
         patch contact_url(contact),
               params: { contact: new_attributes }, headers: valid_headers, as: :json
@@ -96,7 +96,7 @@ RSpec.describe "/contacts", type: :request do
         skip("Add assertions for updated state")
       end
 
-      it "renders a JSON response with the contact" do
+      it "renders a JSON response with the contact_list" do
         contact = Contact.create! valid_attributes
         patch contact_url(contact),
               params: { contact: new_attributes }, headers: valid_headers, as: :json
@@ -106,7 +106,7 @@ RSpec.describe "/contacts", type: :request do
     end
 
     context "with invalid parameters" do
-      it "renders a JSON response with errors for the contact" do
+      it "renders a JSON response with errors for the contact_list" do
         contact = Contact.create! valid_attributes
         patch contact_url(contact),
               params: { contact: invalid_attributes }, headers: valid_headers, as: :json
@@ -117,7 +117,7 @@ RSpec.describe "/contacts", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested contact" do
+    it "destroys the requested contact_list" do
       contact = Contact.create! valid_attributes
       expect {
         delete contact_url(contact), headers: valid_headers, as: :json

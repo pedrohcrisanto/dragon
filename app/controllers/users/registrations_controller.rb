@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  include RackSessionsFix
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
@@ -59,4 +60,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+  private
+
+  def respond_with(current_user, _opts = {})
+    if resource.persisted?
+      render json: {
+        status: {code: 200, message: 'Signed up successfully.'},
+        data: UserSerializer.new(current_user).serializable_hash[:data][:attributes]
+      }
+    else
+      render json: {
+        errors: current_user.errors.full_messages
+      }, status: :unprocessable_entity
+    end
+  end
+
 end

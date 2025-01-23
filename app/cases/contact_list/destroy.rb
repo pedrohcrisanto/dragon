@@ -1,4 +1,4 @@
-module Contact
+module ContactList
   class Destroy < Micro::Case
     attributes :contact
 

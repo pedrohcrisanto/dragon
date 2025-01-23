@@ -1,4 +1,4 @@
-module Contact
+module ContactList
   class Show < Micro::Case
     attributes :contact
 

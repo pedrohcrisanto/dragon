@@ -1,4 +1,4 @@
-module Contact
+module ContactList
   class Update < Micro::Case
     attributes :contact, :address
 

@@ -58,3 +58,7 @@ gem 'has_scope'
 gem 'geocoder'
 gem "viacep"
 gem 'will_paginate', '~> 4.0'
+gem 'rack-cors'
+gem 'devise-jwt'
+gem 'jsonapi-serializer'
+gem "jbuilder"

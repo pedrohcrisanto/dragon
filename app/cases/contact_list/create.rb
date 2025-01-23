@@ -1,4 +1,4 @@
-module Contact
+module ContactList
   class Create < Micro::Case
     attributes :contact, :address, :user
 

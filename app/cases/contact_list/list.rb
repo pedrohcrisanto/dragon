@@ -1,4 +1,4 @@
-module Contact
+module ContactList
   class List < Micro::Case
     attributes :user, :collection, :q
 
