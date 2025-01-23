@@ -1,11 +1,11 @@
 class ContactsController < ApplicationController
-  before_action :set_contact, only: %i[ show update destroy ]
-  # before_action :authenticate_user!
-  # GET /contact
+  #before_action :set_contact, only: %i[ show update destroy ]
+  before_action :authenticate_user!
+
   def index
-    result = ::Contact::List.call(user: User.last,
+    result = ::Contact::List.call(user: current_user,
                                   collection: collection,
-                                  search: params[:q])
+                                  q: params[:q])
 
     if result.success?
       render json: Contact::ContactBlueprint.render(result.data),  status: :ok
@@ -13,7 +13,6 @@ class ContactsController < ApplicationController
       render json: result.data, status: :unprocessable_entity
     end
 
-    # GET /contact/1
     def show
       result = ::Contact::Show.call(contact: @contact)
 
@@ -24,11 +23,10 @@ class ContactsController < ApplicationController
       end
     end
 
-    # POST /contact
     def create
       result = ::Contact::Create.call(contact: contact_params[:contact],
                                       address: contact_params[:address],
-                                      user: User.last)
+                                      user: current_user)
       if result.success?
         render json: result.data, status: :created
       else
@@ -36,18 +34,16 @@ class ContactsController < ApplicationController
       end
     end
 
-    # PATCH/PUT /contact/1
     def update
       result = ::Contact::Update.call(contact: @contact, params: contact_params)
 
       if result.success?
-        render json: result.data
+        render json: Contact::ContactBlueprint.render(result.data)
       else
         render json: result.data, status: :unprocessable_entity
       end
     end
 
-    # DELETE /contact/1
     def destroy
       @contact.destroy!
     end
@@ -63,16 +59,15 @@ class ContactsController < ApplicationController
     end
 
     private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_contact
       @contact = Contact.find(params.expect(:id))
     end
 
     def collection
-      User.last.contacts.includes(:address).order(:name)
+      current_user.contacts.includes(:address).order(:name)
     end
 
-    # Only allow a list of trusted parameters through.
     def contact_params
       params.permit(:q, :zip_code, :page, :per_page,
                     contact: [ :name, :cpf, :cellphone, :user_id ],
