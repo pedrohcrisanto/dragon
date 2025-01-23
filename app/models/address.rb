@@ -8,12 +8,12 @@ class Address < ApplicationRecord
   before_update :update_coordinates
 
   def full_address
-    "#{street}, #{city}, #{state} #{zip_code}"
+   [ street, number, city, state, "Brasil" ].compact.join(", ")
   end
 
   private
 
   def update_coordinates
-    ::Geocode::Coordinates::Update.call(address: self)
+    self.geocode
   end
 end

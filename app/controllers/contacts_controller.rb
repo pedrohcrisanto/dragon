@@ -1,13 +1,15 @@
 class ContactsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_contact, only: %i[show update destroy]
 
   def index
     result = ::ContactList::List.call(user: current_user,
-                                      collection: collection,
+                                      collection: contacts,
                                       search: params[:q])
+    binding.pry
 
     if result.success?
-      render json: ContactList::ContactBlueprint.render(result.data),  status: :ok
+      render json: ContactList::ContactBlueprint.render_as_hash(result.data[:contacts]),  status: :ok
     else
       render json: result.data, status: :unprocessable_entity
     end
@@ -17,7 +19,7 @@ class ContactsController < ApplicationController
     result = ::ContactList::Show.call(contact: @contact)
 
     if result.success?
-      render json: ContactList::ContactBlueprint.render(result.data)
+      render json: ContactList::ContactBlueprint.render(result.data[:contact])
     else
       render json: result.data, status: :unprocessable_entity
     end
@@ -35,21 +37,29 @@ class ContactsController < ApplicationController
   end
 
   def update
-    result = ::ContactList::Update.call(contact: @contact, params: contact_params)
-
+    result = ::ContactList::Update.call(contact: contact_params[:contact],
+                                        address: contact_params[:address],
+                                        id: contact_params[:id])
+    binding.pry
     if result.success?
-      render json: ::ContactList::ContactBlueprint.render(result.data)
+      render json: ::ContactList::ContactBlueprint.render(result.data[:contact]), message: result.data[:message]
     else
       render json: result.data, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @contact.destroy!
+    result = ::ContactList::Destroy.call(contact: @contact)
+
+    if result.success?
+      render json: result.data, status: :ok
+    else
+      render json: result.data, status: :unprocessable_entity
+    end
   end
 
   def search_address
-    result = ::Viacep::SearchAddress.call(zip_code: contact_params[:zipcode])
+    result = ::ContactList::SearchAddress.call(zip_code: contact_params[:zip_code])
 
     if result.success?
       render json: result.data
@@ -60,8 +70,12 @@ class ContactsController < ApplicationController
 
   private
 
-  def collection
-    @collection |= current_user.contacts.includes(:address).order(:name)
+  def set_contact
+    @contact = current_user.contacts.find(params[:id])
+  end
+
+  def contacts
+    @contacts ||= current_user.contacts.includes(:address).order(:name)
   end
 
   def contact_params

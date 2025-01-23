@@ -10,12 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_23_114823) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_23_132619) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "addresses", force: :cascade do |t|
-    t.integer "zip_code"
     t.string "street"
     t.integer "number"
     t.string "complement"
@@ -26,6 +25,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_114823) do
     t.string "state"
     t.float "latitude"
     t.float "longitude"
+    t.string "zip_code"
     t.index ["contact_id"], name: "index_addresses_on_contact_id"
     t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude"
   end

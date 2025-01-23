@@ -1,4 +1,4 @@
-module Geocode
+
   module Coordinates
     class Update < Micro::Case
       attributes :address
@@ -10,12 +10,13 @@ module Geocode
       private
 
       def update_lat_long
+        binding.pry
         address.update(latitude: geocode.latitude, longitude: geocode.longitude)
       end
 
       def geocode
-        Geocoder.search(address.full_address)&.first
+        Geocoder.search("Brazil", params: {city: address.city, road: address.street} )
       end
     end
   end
-end
+

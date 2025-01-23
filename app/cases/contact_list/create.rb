@@ -17,7 +17,7 @@ module ContactList
     def create_contact_address
       ActiveRecord::Base.transaction do
         new_contact = create_contact
-
+        binding.pry
         new_address(contact: new_contact).save
       end
     end

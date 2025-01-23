@@ -1,4 +1,4 @@
-module Viacep
+module ContactList
   class SearchAddress < Micro::Case
     attributes :zip_code
 
@@ -12,7 +12,7 @@ module Viacep
     private
 
     def search
-      @search |= ViaCep::Address.new(zipcode)
+      @search ||= ViaCep::Address.new(zip_code)
     end
 
     def address
