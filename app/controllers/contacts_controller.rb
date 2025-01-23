@@ -6,10 +6,9 @@ class ContactsController < ApplicationController
     result = ::ContactList::List.call(user: current_user,
                                       collection: contacts,
                                       search: params[:q])
-    binding.pry
 
     if result.success?
-      render json: ContactList::ContactBlueprint.render_as_hash(result.data[:contacts]),  status: :ok
+      render json: ContactList::ContactBlueprint.render(result.data[:contacts]),  status: :ok
     else
       render json: result.data, status: :unprocessable_entity
     end
@@ -82,7 +81,6 @@ class ContactsController < ApplicationController
     params.permit(:q, :zip_code, :page, :per_page, :id,
                   contact: [ :name, :cpf, :cellphone, :user_id ],
                   address: [ :street, :city, :state, :zip_code,
-                             :number, :complement ])
+                             :number, :complement, :country ])
   end
 end
-

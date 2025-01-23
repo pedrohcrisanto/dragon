@@ -1,0 +1,4 @@
+module DeviseRequestSpecHelpers
+
+
+end

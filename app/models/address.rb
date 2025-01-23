@@ -7,6 +7,8 @@ class Address < ApplicationRecord
   before_save :update_coordinates
   before_update :update_coordinates
 
+  validates :city, :state, :street, :number, :zip_code, :country, presence: true
+
   def full_address
    [ street, number, city, state, "Brasil" ].compact.join(", ")
   end
