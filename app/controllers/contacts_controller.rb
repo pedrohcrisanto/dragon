@@ -38,7 +38,7 @@ class ContactsController < ApplicationController
     result = ::ContactList::Update.call(contact: @contact, params: contact_params)
 
     if result.success?
-      render json: result.data
+      render json: ::ContactList::ContactBlueprint.render(result.data)
     else
       render json: result.data, status: :unprocessable_entity
     end
