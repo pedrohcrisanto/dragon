@@ -133,8 +133,16 @@ describe 'Contacts API' do
       tags 'Contacts'
       security [ cookie: [] ]
       consumes 'application/json'
+      parameter name: :q, in: :query, type: :string
+      parameter name: :page, in: :query, type: :integer
+      parameter name: :per_page, in: :query, type: :integer
+
       response '200', 'contacts found' do
         let(:contacts) { create_list(:contact, :with_address, 10, user: user) }
+        let(:q) { 'foo' }
+        let(:page) { 1 }
+        let(:per_page) { 10 }
+
         run_test!
       end
     end
