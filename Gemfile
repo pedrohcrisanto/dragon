@@ -8,28 +8,28 @@ gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
-gem 'rswag'
+gem "rswag"
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "devise", "~> 4.9"
-gem 'cpf_faker'
-gem 'u-case', '~> 4.5.1'
-gem 'pry', '~> 0.15.0'
-gem 'blueprinter'
-gem 'has_scope'
-gem 'geocoder'
+gem "cpf_faker"
+gem "u-case", "~> 4.5.1"
+gem "pry", "~> 0.15.0"
+gem "blueprinter"
+gem "has_scope"
+gem "geocoder"
 gem "viacep"
-gem 'will_paginate', '~> 4.0'
-gem 'rack-cors'
-gem 'devise-jwt'
-gem 'jsonapi-serializer'
+gem "will_paginate", "~> 4.0"
+gem "rack-cors"
+gem "devise-jwt"
+gem "jsonapi-serializer"
 gem "cpf_cnpj"
-gem 'faker'
-gem 'rswag-api'
-gem 'rswag-ui'
+gem "faker"
+gem "rswag-api"
+gem "rswag-ui"
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
 gem "solid_queue"
@@ -58,8 +58,8 @@ group :development, :test do
   gem "brakeman", require: false
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase"
-  gem 'shoulda-matchers'
-  gem 'rspec-rails'
-  gem 'rswag-specs'
-  gem 'factory_bot_rails'
+  gem "shoulda-matchers"
+  gem "rspec-rails"
+  gem "rswag-specs"
+  gem "factory_bot_rails"
 end
