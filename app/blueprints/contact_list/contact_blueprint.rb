@@ -7,3 +7,4 @@ module ContactList
     association :address, blueprint: ::AddressBlueprint
   end
 end
+

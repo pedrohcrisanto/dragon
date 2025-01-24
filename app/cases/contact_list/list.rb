@@ -10,7 +10,7 @@ module ContactList
 
     def list
       return collection&.where("name LIKE ? OR cpf LIKE ?", "%#{q}%", "%#{q}%") if q.present?
-      collection if collection.present?
+      return collection if collection.present?
 
       []
     end

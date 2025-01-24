@@ -9,7 +9,7 @@ class ContactsController < ApplicationController
 
     if result.success?
       render json: {
-        contacts: ContactList::ContactBlueprint.render_as_json(result.data[:contacts]),
+        contacts: ::ContactList::ContactBlueprint.render_as_json(result.data[:contacts]),
         pagination: {
           current_page: result.data[:contacts].current_page,
           total_pages: result.data[:contacts].total_pages,
@@ -55,7 +55,7 @@ class ContactsController < ApplicationController
   end
 
   def destroy
-    result = ::ContactList::Destroy.call(contact: @contact)
+    result = ::ContactList::Destroy.call(contact: @contact, user: current_user)
 
     if result.success?
       render json: result.data, status: :ok
