@@ -1,24 +1,38 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Teste Desenvolvedor
 
-Things you may want to cover:
+O projeto consiste na criação de uma API para uma Lista de contatos.
 
-* Ruby version
+É possivel cadastrar dados assim como visualizar as demais informações, incluindo o endereço do contato com a localização no mapa.
 
-* System dependencies
+## Configuração
 
-* Configuration
+Clone o projeto
 
-* Database creation
+```sh
+$ git clone https://github.com/pedrohcrisanto/dragon.git
+```
 
-* Database initialization
+Instale as dependências
+```sh
+$ bundle install
+```
 
-* How to run the test suite
+Crie o banco e migre as tabelas
+```sh
+$ rake db:create db:migrate 
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+Inicie o servidor
+```sh
+$ rails s
+```
 
-* Deployment instructions
+Para realizar Testes
+```sh
+$ bundle exec rspec
+```
 
-* ...
+## Postman
+Na raiz do projeto existe uma coleção do postman, onde é possivel exportar e visualizar os endpoints disponiveis.
+
