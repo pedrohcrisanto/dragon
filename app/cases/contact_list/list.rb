@@ -1,4 +1,4 @@
-module Contact
+module ContactList
   class List < Micro::Case
     attributes :user, :collection, :q
 
@@ -11,7 +11,7 @@ module Contact
     private
 
     def search
-      collection.where("name LIKE ?", "%#{q}%")
+      collection.where("name LIKE ? OR cpf LIKE ?", "%#{q}%", "%#{q}%")
     end
   end
 end

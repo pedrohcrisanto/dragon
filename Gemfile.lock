@@ -86,9 +86,13 @@ GEM
     brakeman (7.0.0)
       racc
     builder (3.3.0)
+    clipboard (2.0.0)
     coderay (1.1.3)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.0)
+    cpf_cnpj (1.0.1)
+    cpf_faker (1.3.0)
+      clipboard
     crass (1.0.6)
     csv (3.3.2)
     date (3.4.1)
@@ -101,15 +105,33 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-jwt (0.12.1)
+      devise (~> 4.0)
+      warden-jwt_auth (~> 0.10)
     diff-lcs (1.5.1)
     dotenv (3.1.7)
     drb (2.2.1)
+    dry-auto_inject (1.1.0)
+      dry-core (~> 1.1)
+      zeitwerk (~> 2.6)
+    dry-configurable (1.3.0)
+      dry-core (~> 1.1)
+      zeitwerk (~> 2.6)
+    dry-core (1.1.0)
+      concurrent-ruby (~> 1.0)
+      logger
+      zeitwerk (~> 2.6)
     ed25519 (1.3.0)
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
+    factory_bot_rails (6.4.4)
+      factory_bot (~> 6.5)
+      railties (>= 5.0.0)
+    faker (3.5.1)
+      i18n (>= 1.8.11, < 2)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -131,6 +153,10 @@ GEM
     json-schema (5.1.1)
       addressable (~> 2.8)
       bigdecimal (~> 3.1)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
+    jwt (2.10.1)
+      base64
     kamal (2.4.0)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -203,6 +229,8 @@ GEM
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.8)
+    rack-cors (2.0.2)
+      rack (>= 2.0.0)
     rack-session (2.1.0)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -311,6 +339,8 @@ GEM
       rubocop-rails
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
+    shoulda-matchers (6.4.0)
+      activesupport (>= 5.2.0)
     solid_cable (3.0.5)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -354,6 +384,11 @@ GEM
     viacep (2.0.3)
     warden (1.2.9)
       rack (>= 2.0.9)
+    warden-jwt_auth (0.11.0)
+      dry-auto_inject (>= 0.8, < 2)
+      dry-configurable (>= 0.13, < 2)
+      jwt (~> 2.1)
+      warden (~> 1.2)
     websocket-driver (0.7.7)
       base64
       websocket-extensions (>= 0.1.0)
@@ -375,19 +410,29 @@ DEPENDENCIES
   blueprinter
   bootsnap
   brakeman
+  cpf_cnpj
+  cpf_faker
   debug
   devise (~> 4.9)
-  factory_bot (~> 6.5)
+  devise-jwt
+  factory_bot_rails
+  faker
   geocoder
   has_scope
+  jsonapi-serializer
   kamal
   pg (~> 1.1)
   pry (~> 0.15.0)
   puma (>= 5.0)
+  rack-cors
   rails (~> 8.0.1)
-  rspec-rails (~> 7.0.0)
+  rspec-rails
   rswag
+  rswag-api
+  rswag-specs
+  rswag-ui
   rubocop-rails-omakase
+  shoulda-matchers
   solid_cable
   solid_cache
   solid_queue

@@ -1,83 +1,97 @@
 class ContactsController < ApplicationController
-  before_action :set_contact, only: %i[ show update destroy ]
-  # before_action :authenticate_user!
-  # GET /contact
+  before_action :authenticate_user!
+  before_action :set_contact, only: %i[show update destroy]
+
   def index
-    result = ::Contact::List.call(user: User.last,
-                                  collection: collection,
-                                  search: params[:q])
+    result = ::ContactList::List.call(user: current_user,
+                                      collection: contacts,
+                                      q: params[:q])
 
     if result.success?
-      render json: Contact::ContactBlueprint.render(result.data),  status: :ok
+      render json: {
+        contacts: ContactList::ContactBlueprint.render_as_json(result.data[:contacts]),
+        pagination: {
+          current_page: result.data[:contacts].current_page,
+          total_pages: result.data[:contacts].total_pages,
+          total_count: result.data[:contacts].total_entries
+        }
+      }, status: :ok
     else
       render json: result.data, status: :unprocessable_entity
     end
+  end
 
-    # GET /contact/1
-    def show
-      result = ::Contact::Show.call(contact: @contact)
+  def show
+    result = ::ContactList::Show.call(contact: @contact)
 
-      if result.success?
-        render json: Contact::ContactBlueprint.render(result.data)
-      else
-        render json: result.data, status: :unprocessable_entity
-      end
+    if result.success?
+      render json: ContactList::ContactBlueprint.render(result.data[:contact])
+    else
+      render json: result.data, status: :unprocessable_entity
     end
+  end
 
-    # POST /contact
-    def create
-      result = ::Contact::Create.call(contact: contact_params[:contact],
-                                      address: contact_params[:address],
-                                      user: User.last)
-      if result.success?
-        render json: result.data, status: :created
-      else
-        render json: result.data, status: :unprocessable_entity
-      end
+  def create
+    result = ::ContactList::Create.call(contact: contact_params[:contact],
+                                        address: contact_params[:address],
+                                        user: current_user)
+    if result.success?
+      render json: result.data, status: :created
+    else
+      render json: result.data, status: :unprocessable_entity
     end
+  end
 
-    # PATCH/PUT /contact/1
-    def update
-      result = ::Contact::Update.call(contact: @contact, params: contact_params)
+  def update
+    result = ::ContactList::Update.call(contact: contact_params[:contact],
+                                        address: contact_params[:address],
+                                        id: contact_params[:id])
 
-      if result.success?
-        render json: result.data
-      else
-        render json: result.data, status: :unprocessable_entity
-      end
+    if result.success?
+      render json: ::ContactList::ContactBlueprint.render(result.data[:contact]), message: result.data[:message]
+    else
+      render json: result.data, status: :unprocessable_entity
     end
+  end
 
-    # DELETE /contact/1
-    def destroy
-      @contact.destroy!
+  def destroy
+    result = ::ContactList::Destroy.call(contact: @contact)
+
+    if result.success?
+      render json: result.data, status: :ok
+    else
+      render json: result.data, status: :unprocessable_entity
     end
+  end
 
-    def search_address
-      result = ::Viacep::SearchAddress.call(zip_code: contact_params[:zipcode])
+  def search_address
+    result = ::ContactList::SearchAddress.call(zip_code: contact_params[:zip_code])
 
-      if result.success?
-        render json: result.data
-      else
-        render json: result.data, status: :unprocessable_entity
-      end
+    if result.success?
+      render json: result.data
+    else
+      render json: result.data, status: :unprocessable_entity
     end
+  end
 
-    private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_contact
-      @contact = Contact.find(params.expect(:id))
-    end
+  private
 
-    def collection
-      User.last.contacts.includes(:address).order(:name)
-    end
+  def set_contact
+    @contact = current_user.contacts.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def contact_params
-      params.permit(:q, :zip_code, :page, :per_page,
-                    contact: [ :name, :cpf, :cellphone, :user_id ],
-                    address: [ :street, :city, :state, :zip_code,
-                               :number, :complement ])
-    end
+  def contacts
+    @contacts ||= current_user.contacts
+                              .includes(:address)
+                              .order(:name)
+                              .paginate(page: contact_params[:page],
+                                        per_page: contact_params[:per_page])
+  end
+
+  def contact_params
+    params.permit(:q, :zip_code, :page, :per_page, :id,
+                  contact: [ :name, :cpf, :cellphone, :user_id ],
+                  address: [ :street, :city, :state, :zip_code,
+                             :number, :complement, :country ])
   end
 end

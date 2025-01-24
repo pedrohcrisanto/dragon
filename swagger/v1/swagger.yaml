@@ -3,9 +3,181 @@ openapi: 3.0.1
 info:
   title: API V1
   version: v1
-paths: {}
+paths:
+  "/contacts":
+    post:
+      summary: Creates a contact
+      tags:
+      - Contacts
+      security:
+      - cookie: []
+      parameters: []
+      responses:
+        '201':
+          description: contact created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                cpf:
+                  type: string
+                cellphone:
+                  type: string
+              required:
+              - cpf
+              - name
+              - cellphone
+              address:
+                type: object
+                properties:
+                  street:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  zip_code:
+                    type: string
+                  number:
+                    type: string
+                  country:
+                    type: string
+                required:
+                - street
+                - city
+                - state
+                - zip_code
+                - number
+                - country
+    get:
+      summary: Retrieves all contacts
+      tags:
+      - Contacts
+      security:
+      - cookie: []
+      responses:
+        '200':
+          description: contacts found
+  "/contacts/{id}":
+    put:
+      summary: Updates a contact
+      tags:
+      - Contacts
+      security:
+      - cookie: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: contact updated
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                cpf:
+                  type: string
+                cellphone:
+                  type: string
+              required:
+              - cpf
+              - name
+              - cellphone
+              address:
+                type: object
+                properties:
+                  street:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  zip_code:
+                    type: string
+                  number:
+                    type: string
+                  country:
+                    type: string
+                required:
+                - street
+                - city
+                - state
+                - zip_code
+                - number
+                - country
+    delete:
+      summary: Deletes a contact
+      tags:
+      - Contacts
+      security:
+      - cookie: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: contact deleted
+    get:
+      summary: Retrieves a contact
+      tags:
+      - Contacts
+      security:
+      - cookie: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: contact found
+  "/search_address":
+    get:
+      summary: Searches an address
+      tags:
+      - Contacts
+      security:
+      - cookie: []
+      parameters:
+      - name: zip_code
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: address found
+        '422':
+          description: invalid request
+components:
+  securitySchemes:
+    basic_auth:
+      type: http
+      scheme: basic
+    api_key:
+      type: apiKey
+      name: Authorization
+      in: header
 servers:
-- url: https://{defaultHost}
+- url: http://{defaultHost}
   variables:
     defaultHost:
-      default: www.example.com
+      default: localhost:3000

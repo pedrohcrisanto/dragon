@@ -10,20 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_22_175015) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_24_015528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "addresses", force: :cascade do |t|
-    t.integer "zip_code"
-    t.string "street"
-    t.integer "number"
+    t.integer "zip_code", null: false
+    t.string "street", null: false
+    t.integer "number", null: false
     t.string "complement"
     t.bigint "contact_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "city"
-    t.string "state"
+    t.string "country", null: false
+    t.string "state", null: false
+    t.string "city", null: false
     t.float "latitude"
     t.float "longitude"
     t.index ["contact_id"], name: "index_addresses_on_contact_id"
@@ -31,9 +32,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_22_175015) do
   end
 
   create_table "contacts", force: :cascade do |t|
-    t.string "name"
-    t.string "cpf"
-    t.string "cellphone"
+    t.string "name", null: false
+    t.string "cpf", null: false
+    t.string "cellphone", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -48,7 +49,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_22_175015) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
+    t.string "jti", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
