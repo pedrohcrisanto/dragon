@@ -11,7 +11,7 @@ module ContactList
     private
 
     def search
-      collection.where("name LIKE ?", "%#{q}%")
+      collection.where("name LIKE ? OR cpf LIKE ?", "%#{q}%", "%#{q}%")
     end
   end
 end

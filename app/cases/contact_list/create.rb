@@ -3,8 +3,11 @@ module ContactList
     attributes :contact, :address, :user
 
     def call!
-      create_contact_address
-      Success result: { message: "Contato criado com sucesso!" }
+      if create_contact_address
+        Success result: { message: "Contato criado com sucesso!" }
+      else
+        Failure result: { message: "Não foi possivel salvar o contato!" }
+      end
     rescue => e
       Failure result: { message: "Não foi possivel salvar o contato!", error: e }
     end
@@ -13,13 +16,13 @@ module ContactList
 
     def create_contact_address
       ActiveRecord::Base.transaction do
-        new_contact = create_contact
-        new_address(contact: new_contact).save
+        created_contact = create_contact
+        new_address(contact: created_contact).save!
       end
     end
 
     def create_contact
-     Contact.create(name: contact[:name],
+     Contact.create!(name: contact[:name],
                     cpf: contact[:cpf],
                     cellphone: contact[:cellphone],
                     user_id: user.id)

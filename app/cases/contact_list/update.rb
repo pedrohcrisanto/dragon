@@ -8,7 +8,11 @@ module ContactList
       else
         Failure result: { message: "Não foi possivel atualizar o contato!" }
       end
+    rescue => e
+      Failure result: { message: e.message }
     end
+
+    private
 
     def update_contact_address
       ActiveRecord::Base.transaction do
@@ -19,7 +23,7 @@ module ContactList
 
     def update_address
       ActiveRecord::Base.transaction do
-        set_contact.address.update(address)
+        set_contact.address.update!(address)
       end
     end
 
@@ -28,7 +32,7 @@ module ContactList
     end
 
     def update_contact
-      set_contact.update(contact)
+      set_contact.update!(contact)
     end
   end
 end

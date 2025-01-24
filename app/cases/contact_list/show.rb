@@ -3,7 +3,11 @@ module ContactList
     attributes :contact
 
     def call!
-      Success result: { contact: contact }
+      if contact
+        Success result: { contact: contact }
+      else
+        Failure result: { message: "Contato não encontrado!" }
+      end
     end
   end
 end

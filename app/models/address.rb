@@ -10,11 +10,10 @@ class Address < ApplicationRecord
   validates :city, :state, :street, :number, :zip_code, :country, presence: true
 
   def full_address
-   [ street, number, city, state, "Brasil" ].compact.join(", ")
+   [ street, number, city, state, country ].compact.join(", ")
   end
 
   private
-
   def update_coordinates
     self.geocode
   end

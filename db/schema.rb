@@ -10,31 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_23_151214) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_24_015528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "addresses", force: :cascade do |t|
-    t.string "street"
-    t.integer "number"
+    t.integer "zip_code", null: false
+    t.string "street", null: false
+    t.integer "number", null: false
     t.string "complement"
     t.bigint "contact_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "city"
-    t.string "state"
+    t.string "country", null: false
+    t.string "state", null: false
+    t.string "city", null: false
     t.float "latitude"
     t.float "longitude"
-    t.string "zip_code"
-    t.string "country"
     t.index ["contact_id"], name: "index_addresses_on_contact_id"
     t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude"
   end
 
   create_table "contacts", force: :cascade do |t|
-    t.string "name"
-    t.string "cpf"
-    t.string "cellphone"
+    t.string "name", null: false
+    t.string "cpf", null: false
+    t.string "cellphone", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

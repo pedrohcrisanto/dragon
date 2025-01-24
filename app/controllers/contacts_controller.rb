@@ -5,10 +5,17 @@ class ContactsController < ApplicationController
   def index
     result = ::ContactList::List.call(user: current_user,
                                       collection: contacts,
-                                      search: params[:q])
+                                      q: params[:q])
 
     if result.success?
-      render json: ContactList::ContactBlueprint.render(result.data[:contacts]),  status: :ok
+      render json: {
+        contacts: ContactList::ContactBlueprint.render_as_json(result.data[:contacts]),
+        pagination: {
+          current_page: result.data[:contacts].current_page,
+          total_pages: result.data[:contacts].total_pages,
+          total_count: result.data[:contacts].total_entries
+        }
+      }, status: :ok
     else
       render json: result.data, status: :unprocessable_entity
     end
@@ -39,7 +46,7 @@ class ContactsController < ApplicationController
     result = ::ContactList::Update.call(contact: contact_params[:contact],
                                         address: contact_params[:address],
                                         id: contact_params[:id])
-    binding.pry
+
     if result.success?
       render json: ::ContactList::ContactBlueprint.render(result.data[:contact]), message: result.data[:message]
     else
@@ -74,7 +81,11 @@ class ContactsController < ApplicationController
   end
 
   def contacts
-    @contacts ||= current_user.contacts.includes(:address).order(:name)
+    @contacts ||= current_user.contacts
+                              .includes(:address)
+                              .order(:name)
+                              .paginate(page: contact_params[:page],
+                                        per_page: contact_params[:per_page])
   end
 
   def contact_params
