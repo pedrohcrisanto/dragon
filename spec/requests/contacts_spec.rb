@@ -19,7 +19,7 @@ describe 'Contacts API' do
           cpf: { type: :string },
           cellphone: { type: :string }
         },
-        required: [ 'cpf', 'name', 'cellphone' ],
+        required: %w[cpf name cellphone],
         address: {
           type: :object,
           properties: {
@@ -30,7 +30,7 @@ describe 'Contacts API' do
             number: { type: :string },
             country: { type: :string }
           },
-          required: [ 'street', 'city', 'state', 'zip_code', 'number', 'country' ]
+          required: %w[street city state zip_code number country]
         }
       }
 
@@ -64,7 +64,7 @@ describe 'Contacts API' do
           cpf: { type: :string },
           cellphone: { type: :string }
         },
-        required: [ 'cpf', 'name', 'cellphone' ],
+        required: %w[cpf name cellphone],
         address: {
           type: :object,
           properties: {
@@ -75,7 +75,7 @@ describe 'Contacts API' do
             number: { type: :string },
             country: { type: :string }
           },
-          required: [ 'street', 'city', 'state', 'zip_code', 'number', 'country' ]
+          required: %w[street city state zip_code number country]
         }
       }
       response '200', 'contact updated' do
