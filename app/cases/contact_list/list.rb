@@ -3,15 +3,16 @@ module ContactList
     attributes :user, :collection, :q
 
     def call!
-      data = q.nil? ? collection : search
-
-      Success result: { contacts: data }
+      Success result: { contacts: list }
     end
 
     private
 
-    def search
-      collection.where("name LIKE ? OR cpf LIKE ?", "%#{q}%", "%#{q}%")
+    def list
+      return collection&.where("name LIKE ? OR cpf LIKE ?", "%#{q}%", "%#{q}%") if q.present?
+      collection if collection.present?
+
+      []
     end
   end
 end
