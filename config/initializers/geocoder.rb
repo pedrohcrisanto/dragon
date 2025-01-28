@@ -1,4 +1,4 @@
 # config/initializers/geocoder.rb
 Geocoder.configure(
-  api_key: ENV['GOOGLE_MAPS_API_KEY']
+  api_key: Rails.application.credentials.google_maps_secret_key!
 )
