@@ -1,6 +1,6 @@
 module ContactList
   class List < Micro::Case
-    attributes :user, :collection, :q
+    attributes :collection, :q
 
     def call!
       Success result: { contacts: list }

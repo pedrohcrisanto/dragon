@@ -10,11 +10,7 @@ class ContactsController < ApplicationController
     if result.success?
       render json: {
         contacts: ::ContactList::ContactBlueprint.render_as_json(result.data[:contacts]),
-        pagination: {
-          current_page: result.data[:contacts]&.current_page,
-          total_pages: result.data[:contacts]&.total_pages,
-          total_count: result.data[:contacts]&.total_entries
-        }
+        pagination: pagination(result.data[:contacts])
       }, status: :ok
     else
       render json: result.data, status: :unprocessable_entity
@@ -64,6 +60,13 @@ class ContactsController < ApplicationController
     end
   end
 
+  def pagination(data)
+    {
+      current_page: contacts.current_page,
+      total_pages: contacts.total_pages,
+      total_count: contacts.total_entries
+    } if data.present?
+  end
   def search_address
     result = ::ContactList::SearchAddress.call(zip_code: contact_params[:zip_code])
 
