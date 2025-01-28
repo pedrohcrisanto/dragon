@@ -11,9 +11,9 @@ class ContactsController < ApplicationController
       render json: {
         contacts: ::ContactList::ContactBlueprint.render_as_json(result.data[:contacts]),
         pagination: {
-          current_page: result.data[:contacts].current_page,
-          total_pages: result.data[:contacts].total_pages,
-          total_count: result.data[:contacts].total_entries
+          current_page: result.data[:contacts]&.current_page,
+          total_pages: result.data[:contacts]&.total_pages,
+          total_count: result.data[:contacts]&.total_entries
         }
       }, status: :ok
     else
